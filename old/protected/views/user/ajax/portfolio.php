@@ -1,0 +1,3 @@
+<?UGetDate::arPrint($arResult)?>
+
+safdasfasfasfa

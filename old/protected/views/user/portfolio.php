@@ -1,0 +1,1 @@
+<?UGetDate::arPrint($arResult)?>

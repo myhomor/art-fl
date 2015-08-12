@@ -1,0 +1,24 @@
+.wr-detail-service{
+}
+.wr-detail-service div.bx-user{
+	background-color: rgb(34, 34, 34);
+	padding: 15px;
+}
+.wr-detail-service div.bx-user .ico{
+	width: 66px;
+	display: inline-block;
+	padding-right: 10px;
+}
+.wr-detail-service div.bx-user .ico img{width:100%}
+
+div.bx-user div.uname a{color:#fff}
+div.bx-user div.uname{
+	display: inline-block;
+}
+.wr-detail-service div.detail
+{
+	border: 1px solid #DDD;
+	border-top:none;
+	border-radius: 0 0 5px 5px;
+	padding:10px;
+}

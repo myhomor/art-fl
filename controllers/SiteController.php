@@ -48,32 +48,6 @@ class SiteController extends Controller
         ];
     }
 	
-	public function actionTest()
-	{
-		/* $file = \yii\web\UploadedFile::getInstance($model,'file');
-		\yii\helpers\VarDumper::dump($file);
-			$file_path = '/web/upload/' . $file->baseName . '.' . $file->extension;
-			 
-			$file->saveAs($file_path); */
-		$model = new \app\modules\user\models\settings\UserForm();
-		$model->load(\Yii::$app->request->getBodyParams());
-		
-		$file = \yii\web\UploadedFile::getInstance($model,'avatar');
-		//\yii\helpers\VarDumper::dump($file);
-		if($file)
-		{
-			$file_path = '/upload/' . $file->baseName . '.' . $file->extension;
-			$file->saveAs($file_path);
-		}
-		return $this->render('test',
-						[
-						'file_path'=>$file_path,
-						'file' => $file,
-						'model' => $model,
-						]
-					);
-	}
-	
     public function actionIndex()
     {
         return $this->render('index');

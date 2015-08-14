@@ -18,25 +18,32 @@ use app\modules\user\models\services\CUserServices;
 class SettingsController extends \yii\web\Controller
 {
 	public $user;
-
+	//get params
+	public $_a = null;
+	public $_id = null;
 	public function beforeAction($action)	
 	{	
 		if(\Yii::$app->user->isGuest)
 			throw new HttpException(404, 'Page not found');
 		else
 		{
+			if(Yii::$app->request->get('_a'))
+				$this->_a = Yii::$app->request->get('_a');
+			if(Yii::$app->request->get('_id'))
+				$this->_id = Yii::$app->request->get('_id');
+			
 			$this->user = CUser::findOne(Yii::$app->user->ID);
 			return parent::beforeAction($action);
 		}
 	}
 
 
-    public function actionIndex($_a=null,$_id=null)
+    public function actionIndex()
     {	
 		return $this->actionUser();
     }
 	
-	public function actionUser($_a=null,$_id=null)
+	public function actionUser()
 	{
 		
 		$model = new UserForm();
@@ -54,14 +61,11 @@ class SettingsController extends \yii\web\Controller
 				'user' => $this->user,
 				'model' => $model,
 				'post' => Yii::$app->request->post('UserForm'),
-				'attr' => $model->attributes,
-				'attr2' => $model->attributeModel(),
-				'tt' => $tt
 			)
 		);
 	}
 	
-	public function actionContact($_a=null,$_id=null)
+	public function actionContact()
 	{
 		$model = new \app\modules\user\models\settings\ContactForm();
 		
@@ -108,12 +112,12 @@ class SettingsController extends \yii\web\Controller
 		);
 	}
 	
-	public function actionService($_a=null,$_id=null)
+	public function actionService()
 	{
-		if(is_null($_a))
-			$_a = 'list';
+		if(is_null($this->_a))
+			$this->_a = 'list';
 		
-		switch ($_a)
+		switch ($this->_a)
 		{
 			case 'list':
 			{
@@ -143,8 +147,8 @@ class SettingsController extends \yii\web\Controller
 				if(Yii::$app->request->isPost)
 				{
 					$model->attributes = Yii::$app->request->post('ServiceForm');
-					//if($model->save())
-					//	$this->redirect('/user/settings/service/',302);
+					if($model->save())
+						$this->redirect('/user/settings/service/',302);
 				}
 				return $this->render(	
 					'service/add',
@@ -157,11 +161,11 @@ class SettingsController extends \yii\web\Controller
 			}
 			case 'detail':
 			{
-				if(is_null($_id))
+				if(is_null($this->_id))
 					throw new HttpException(404, 'Element not found');
 				else
 				{
-					$service = CUserServices::find()->byID($_id);
+					$service = CUserServices::find()->byID($this->_id);
 					$model = new ServiceForm();
 					
 					$model->model_service = $service;
@@ -191,11 +195,11 @@ class SettingsController extends \yii\web\Controller
 			}
 			case 'delete':
 			{
-				if(is_null($_id))
+				if(is_null($this->_id))
 					throw new HttpException(404, 'Element not found');
 				else
 				{
-					$model = CUserServices::find()->byID($_id);
+					$model = CUserServices::find()->byID($this->_id);
 					if($model AND $model->ID_USER === $this->user->ID)
 					{	
 						if($model->delete())
